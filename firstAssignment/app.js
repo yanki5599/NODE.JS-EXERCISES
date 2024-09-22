@@ -7,7 +7,7 @@ const {
   printUniqueWordsCap,
   printUniqueWordsLongerThan,
   printUniqWordsVowelsCount,
-} = require("./fileManip");
+} = require("./utils");
 
 const filePath = "./data/data.txt";
 
@@ -25,4 +25,4 @@ printUniqueWordsCap(filePath);
 
 printUniqueWordsLongerThan(filePath, 5);
 
-printUniqWordsVowelsCount(filePath);
+printUniqWordsVowelsCount(filePath, "output.txt");
