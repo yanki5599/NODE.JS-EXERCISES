@@ -12,7 +12,11 @@ const {
 
 function print(data, outputFilePath = null) {
   if (outputFilePath)
-    fs.appendFileSync(outputFilePath, JSON.stringify(data), "utf-8");
+    fs.appendFileSync(
+      outputFilePath,
+      JSON.stringify(data, null, 4) + "\n",
+      "utf-8"
+    );
   else console.log(data);
 }
 

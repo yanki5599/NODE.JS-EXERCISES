@@ -21,8 +21,8 @@ printUniqueWords(filePath);
 
 printUniqWordsCount(filePath);
 
-printUniqueWordsCap(filePath);
+printUniqueWordsCap(filePath, "output.txt");
 
-printUniqueWordsLongerThan(filePath, 5);
+printUniqueWordsLongerThan(filePath, 5, "output.txt");
 
 printUniqWordsVowelsCount(filePath, "output.txt");
