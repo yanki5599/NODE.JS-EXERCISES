@@ -1,5 +1,6 @@
 import users from "./DAL/users.js";
 import { v4 as uuidv4 } from "uuid";
+
 export function generateId() {
   return uuidv4();
 }
@@ -8,6 +9,15 @@ export function isExistEmail(email) {
   return !!users.find((u) => u.email === email);
 }
 
+/**
+ * Returns true if the given email is valid, false otherwise.
+ *
+ * The email is considered valid if it matches the following regex:
+ * /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+ *
+ * @param {string} email
+ * @returns {boolean}
+ */
 export function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }

@@ -1,11 +1,5 @@
 import bcrypt from "bcrypt";
-import users from "../DAL/users.js";
-import {
-  generateId,
-  isExistEmail,
-  isValidEmail,
-  isValidPassword,
-} from "../utils.js";
+import { isExistEmail, isValidEmail, isValidPassword } from "../utils.js";
 
 import usersService from "../services/usersService.js";
 
@@ -37,34 +31,47 @@ export const createUser = async (req, res) => {
     return res.status(400).send("Password is not valid");
   }
 
-  usersService.createUser(({ email, password } = req.body));
-  res.status(201).send(user);
+  try {
+    const user = usersService.createUser({
+      email: req.body.email,
+      password: req.body.password,
+    });
+    res.status(201).send(user);
+  } catch (err) {
+    return res.status(400).send(err.message);
+  }
 };
 
 export const updateUser = async (req, res) => {
-  if (req.body.id !== req.params.id) {
-    return res.status(400).send("ID does not match");
-  }
   if (!req.body.email || !req.body.password) {
     return res.status(400).send("Email and password are required");
   }
-
-  const user = users.find((user) => user.id === req.params.id);
-  if (!user) {
-    return res.status(404).send("User not found");
+  if (req.body.id !== req.params.id) {
+    return res.status(400).send("ID does not match");
   }
-  user.email = req.body.email;
-  user.password = req.body.password;
+
+  try {
+    const user = req.body;
+    usersService.updateUser(req.params.id, user);
+  } catch (err) {
+    return res.status(400).send(err.message);
+  }
+
   res.status(204).send();
 };
 
 export const deleteUser = async (req, res) => {
-  const user = users.find((user) => user.id === req.params.id);
-  if (!user) {
+  if (!req.params.id) {
+    return res.status(400).send("ID is required");
+  }
+  if (!usersService.isUserExist(req.params.id)) {
     res.status(404).send("User not found");
-  } else {
-    const index = users.indexOf(user);
-    users.splice(index, 1);
+  }
+
+  try {
+    usersService.deleteUser(req.params.id);
     res.status(204).send();
+  } catch (err) {
+    res.status(400).send(err.message);
   }
 };

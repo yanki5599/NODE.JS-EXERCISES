@@ -1,25 +1,20 @@
 import jsonfile from "jsonfile";
+import { generateId } from "../utils.js";
+import { FILE_PATH as filePath, ensureDataExists } from "./config.js";
+import bcrypt from "bcrypt";
 
-import { FILE_PATH as filePath } from "./config.js";
-
-function ensureDataExists() {
-  if (!jsonfile.existsSync(filePath)) {
-    jsonfile.writeFileSync(filePath, []);
-  }
-}
-
-export function getAllUsers() {
+function getAllUsers() {
   ensureDataExists();
   return jsonfile.readFileSync(filePath);
 }
 
-export function getUserById(id) {
+function getUserById(id) {
   ensureDataExists();
   const users = jsonfile.readFileSync(filePath);
   return users.find((user) => user.id === id);
 }
 
-export function createUser(user) {
+function createUser(user) {
   ensureDataExists();
   if (isUserExist(user.email)) {
     throw new Error("User already exists");
@@ -31,7 +26,7 @@ export function createUser(user) {
     newId = generateId();
   }
 
-  const hash = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync());
+  const hash = bcrypt.hashSync(user.password, bcrypt.genSaltSync());
 
   user.password = hash;
   user.id = newId;
@@ -41,7 +36,7 @@ export function createUser(user) {
   return user;
 }
 
-export function updateUser(id, user) {
+function updateUser(id, user) {
   ensureDataExists();
   const users = jsonfile.readFileSync(filePath);
   const index = users.findIndex((user) => user.id === id);
@@ -53,7 +48,7 @@ export function updateUser(id, user) {
   return user;
 }
 
-export function deleteUser(id) {
+function deleteUser(id) {
   ensureDataExists();
   const users = jsonfile.readFileSync(filePath);
   const index = users.findIndex((user) => user.id === id);
@@ -64,8 +59,17 @@ export function deleteUser(id) {
   jsonfile.writeFileSync(filePath, users);
 }
 
-export function isUserExist(email) {
+function isUserExist(id) {
   ensureDataExists();
   const users = jsonfile.readFileSync(filePath);
-  return users.some((user) => user.email === email);
+  return users.some((user) => user.id === id);
 }
+
+export default {
+  getAllUsers,
+  getUserById,
+  createUser,
+  updateUser,
+  deleteUser,
+  isUserExist,
+};
