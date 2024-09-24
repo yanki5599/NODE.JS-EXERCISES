@@ -4,11 +4,11 @@ import { isExistEmail, isValidEmail, isValidPassword } from "../utils.js";
 import usersService from "../services/usersService.js";
 
 export const getAllUsers = async (req, res) => {
-  res.send(usersService.getAllUsers());
+  res.send(await usersService.getAllUsers());
 };
 
 export const getUserById = async (req, res) => {
-  const user = usersService.getUserById(req.params.id);
+  const user = await usersService.getUserById(req.params.id);
   if (!user) {
     res.status(404).send("User not found");
   } else {
@@ -32,7 +32,7 @@ export const createUser = async (req, res) => {
   }
 
   try {
-    const user = usersService.createUser({
+    const user = await usersService.createUser({
       email: req.body.email,
       password: req.body.password,
     });
@@ -52,7 +52,7 @@ export const updateUser = async (req, res) => {
 
   try {
     const user = req.body;
-    usersService.updateUser(req.params.id, user);
+    await usersService.updateUser(req.params.id, user);
   } catch (err) {
     return res.status(400).send(err.message);
   }
@@ -69,7 +69,7 @@ export const deleteUser = async (req, res) => {
   }
 
   try {
-    usersService.deleteUser(req.params.id);
+    await usersService.deleteUser(req.params.id);
     res.status(204).send();
   } catch (err) {
     res.status(400).send(err.message);

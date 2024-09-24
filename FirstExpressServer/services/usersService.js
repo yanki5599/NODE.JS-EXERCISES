@@ -3,23 +3,23 @@ import { generateId } from "../utils.js";
 import { FILE_PATH as filePath, ensureDataExists } from "./config.js";
 import bcrypt from "bcrypt";
 
-function getAllUsers() {
+async function getAllUsers() {
   ensureDataExists();
-  return jsonfile.readFileSync(filePath);
+  return await jsonfile.readFile(filePath);
 }
 
-function getUserById(id) {
+async function getUserById(id) {
   ensureDataExists();
-  const users = jsonfile.readFileSync(filePath);
+  const users = await jsonfile.readFile(filePath);
   return users.find((user) => user.id === id);
 }
 
-function createUser(user) {
+async function createUser(user) {
   ensureDataExists();
   if (isUserExist(user.email)) {
     throw new Error("User already exists");
   }
-  const users = jsonfile.readFileSync(filePath);
+  const users = await jsonfile.readFile(filePath);
 
   let newId = generateId();
   while (users.find((user) => user.id === newId)) {
@@ -36,9 +36,9 @@ function createUser(user) {
   return user;
 }
 
-function updateUser(id, user) {
+async function updateUser(id, user) {
   ensureDataExists();
-  const users = jsonfile.readFileSync(filePath);
+  const users = await jsonfile.readFile(filePath);
   const index = users.findIndex((user) => user.id === id);
   if (index === -1) {
     throw new Error("User not found");
@@ -48,9 +48,9 @@ function updateUser(id, user) {
   return user;
 }
 
-function deleteUser(id) {
+async function deleteUser(id) {
   ensureDataExists();
-  const users = jsonfile.readFileSync(filePath);
+  const users = await jsonfile.readFile(filePath);
   const index = users.findIndex((user) => user.id === id);
   if (index === -1) {
     throw new Error("User not found");
@@ -59,9 +59,9 @@ function deleteUser(id) {
   jsonfile.writeFileSync(filePath, users);
 }
 
-function isUserExist(id) {
+async function isUserExist(id) {
   ensureDataExists();
-  const users = jsonfile.readFileSync(filePath);
+  const users = await jsonfile.readFile(filePath);
   return users.some((user) => user.id === id);
 }
 
