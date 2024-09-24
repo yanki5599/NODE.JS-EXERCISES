@@ -1,11 +1,9 @@
-import { FILE_PATH as filePath, ensureDataExists } from "./config.js";
 import bcrypt from "bcrypt";
-import jsonfile from "jsonfile";
+
+import { readUsers } from "../DAL/jsonDAL.js";
 
 async function login(email, passwordStr) {
-  ensureDataExists();
-
-  const users = await jsonfile.readFile(filePath);
+  const users = readUsers();
   const user = users.find(
     (u) => u.email === email && bcrypt.compareSync(passwordStr, u.password)
   );

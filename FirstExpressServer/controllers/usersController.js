@@ -1,5 +1,4 @@
-import bcrypt from "bcrypt";
-import { isExistEmail, isValidEmail, isValidPassword } from "../utils.js";
+import { isValidEmail, isValidPassword } from "../utils.js";
 
 import usersService from "../services/usersService.js";
 
@@ -21,7 +20,7 @@ export const createUser = async (req, res) => {
     return res.status(400).send("Email and password are required");
   }
 
-  if (isExistEmail(req.body.email)) {
+  if (await usersService.isExistEmail(req.body.email)) {
     return res.status(400).send("Email already exist");
   }
   if (!isValidEmail(req.body.email)) {

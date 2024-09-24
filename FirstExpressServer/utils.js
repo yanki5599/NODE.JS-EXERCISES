@@ -1,12 +1,7 @@
-import users from "./DAL/users.js";
 import { v4 as uuidv4 } from "uuid";
 
 export function generateId() {
   return uuidv4();
-}
-
-export function isExistEmail(email) {
-  return !!users.find((u) => u.email === email);
 }
 
 /**

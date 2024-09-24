@@ -1,27 +1,23 @@
-import jsonfile from "jsonfile";
+import { readUsers, writeUsers } from "../DAL/jsonDAL.js";
 import { generateId } from "../utils.js";
-import { FILE_PATH as filePath, ensureDataExists } from "./config.js";
 import bcrypt from "bcrypt";
 
 const SALT_ROUNDS = 10;
 
 async function getAllUsers() {
-  ensureDataExists();
-  return await jsonfile.readFile(filePath);
+  return await readUsers();
 }
 
 async function getUserById(id) {
-  ensureDataExists();
-  const users = await jsonfile.readFile(filePath);
+  const users = await readUsers();
   return users.find((user) => user.id === id);
 }
 
 async function createUser(user) {
-  ensureDataExists();
-  if (isUserExist(user.email)) {
+  if (await isExistEmail(user.email)) {
     throw new Error("User already exists");
   }
-  const users = await jsonfile.readFile(filePath);
+  const users = await readUsers();
 
   let newId = generateId();
   while (users.find((user) => user.id === newId)) {
@@ -34,37 +30,41 @@ async function createUser(user) {
   user.id = newId;
 
   users.push(user);
-  jsonfile.writeFileSync(filePath, users);
+  writeUsers(users);
   return user;
 }
 
 async function updateUser(id, user) {
   ensureDataExists();
-  const users = await jsonfile.readFile(filePath);
+  const users = await readUsers();
   const index = users.findIndex((user) => user.id === id);
   if (index === -1) {
     throw new Error("User not found");
   }
   users[index] = user;
-  jsonfile.writeFileSync(filePath, users);
+  writeUsers(users);
   return user;
 }
 
 async function deleteUser(id) {
-  ensureDataExists();
-  const users = await jsonfile.readFile(filePath);
+  const users = await readUsers();
   const index = users.findIndex((user) => user.id === id);
   if (index === -1) {
     throw new Error("User not found");
   }
   users.splice(index, 1);
-  jsonfile.writeFileSync(filePath, users);
+  writeUsers(users);
 }
 
-async function isUserExist(id) {
-  ensureDataExists();
-  const users = await jsonfile.readFile(filePath);
-  return users.some((user) => user.id === id);
+// async function isUserExist(id) {
+//   const users = await readUsers();
+//   return users.some((user) => user.id === id);
+// }
+
+async function isExistEmail(email) {
+  const users = await readUsers();
+  const user = users.find((u) => u.email === email);
+  return user;
 }
 
 export default {
@@ -73,5 +73,6 @@ export default {
   createUser,
   updateUser,
   deleteUser,
-  isUserExist,
+  // isUserExist,
+  isExistEmail,
 };
