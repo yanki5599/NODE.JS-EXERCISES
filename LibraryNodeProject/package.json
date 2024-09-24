@@ -1,0 +1,30 @@
+{
+  "name": "librarynodeproject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "author": "jacob gottlib",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.6.1",
+    "nodemon": "^3.1.7",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.2"
+  },
+  "dependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/jsonfile": "^6.1.4",
+    "bcrypt": "^5.1.1",
+    "express": "^4.21.0",
+    "http-status-ts": "^2.0.1",
+    "jsonfile": "^6.1.0",
+    "uuid": "^10.0.0",
+    "uuidv4": "^6.2.13"
+  }
+}
