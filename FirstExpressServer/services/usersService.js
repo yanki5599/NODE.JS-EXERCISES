@@ -3,6 +3,8 @@ import { generateId } from "../utils.js";
 import { FILE_PATH as filePath, ensureDataExists } from "./config.js";
 import bcrypt from "bcrypt";
 
+const SALT_ROUNDS = 10;
+
 async function getAllUsers() {
   ensureDataExists();
   return await jsonfile.readFile(filePath);
@@ -26,7 +28,7 @@ async function createUser(user) {
     newId = generateId();
   }
 
-  const hash = bcrypt.hashSync(user.password, bcrypt.genSaltSync());
+  const hash = bcrypt.hashSync(user.password, SALT_ROUNDS);
 
   user.password = hash;
   user.id = newId;
