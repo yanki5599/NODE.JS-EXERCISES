@@ -76,7 +76,7 @@ export const deleteBook = async (
 ) => {
   try {
     const userid = req.body.userid; // middleware already checked for userid
-    const bookId: number = req.params?.bookId as unknown as number;
+    const bookId: number = parseInt(req.params?.bookId);
     if (!bookId) {
       throw new ErrorWithStatusCode("book id required", 400);
     }

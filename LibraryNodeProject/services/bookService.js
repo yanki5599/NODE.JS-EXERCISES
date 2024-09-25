@@ -42,7 +42,7 @@ const deleteBook = (userId, bookId) => __awaiter(void 0, void 0, void 0, functio
     const user = yield userService.getUserById(userId);
     if (!user)
         throw new UserNotFoundError();
-    const targetBookIndex = user.books.findIndex((book) => book.id !== bookId);
+    const targetBookIndex = user.books.findIndex((book) => book.id === bookId);
     if (targetBookIndex === -1)
         throw new ErrorWithStatusCode("book to delete not found", 400);
     user.books.splice(targetBookIndex, 1);

@@ -63,7 +63,7 @@ export const deleteBook = (req, res, next) => __awaiter(void 0, void 0, void 0, 
     var _a;
     try {
         const userid = req.body.userid; // middleware already checked for userid
-        const bookId = (_a = req.params) === null || _a === void 0 ? void 0 : _a.bookId;
+        const bookId = parseInt((_a = req.params) === null || _a === void 0 ? void 0 : _a.bookId);
         if (!bookId) {
             throw new ErrorWithStatusCode("book id required", 400);
         }

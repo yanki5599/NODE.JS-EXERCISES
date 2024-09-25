@@ -44,7 +44,7 @@ const updateBook = async (
 const deleteBook = async (userId: string, bookId: number) => {
   const user: User | undefined = await userService.getUserById(userId);
   if (!user) throw new UserNotFoundError();
-  const targetBookIndex = user.books.findIndex((book) => book.id !== bookId);
+  const targetBookIndex = user.books.findIndex((book) => book.id === bookId);
   if (targetBookIndex === -1)
     throw new ErrorWithStatusCode("book to delete not found", 400);
   user.books.splice(targetBookIndex, 1);
