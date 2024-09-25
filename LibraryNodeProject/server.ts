@@ -4,13 +4,15 @@ import bookRouter from "./routes/books.js";
 import { authenticateId } from "./middleware/authMiddleware.js";
 import dotenv from "dotenv";
 import { errorMiddleware } from "./middleware/errorMiddleware.js";
+import cors from "cors";
+
 dotenv.config();
 const app: Application = express();
 
 const PORT: number | string = process.env.PORT || 3000;
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
+app.use(cors());
 // login and register
 app.use("/", authRouter);
 
