@@ -7,14 +7,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { writeUser, readUsers } from "../DAL/jsonUsers.js";
+import { writeUser, readUsers, rewriteUsers } from "../DAL/jsonUsers.js";
 import bcrypt from "bcrypt";
 import { v4 as uuid } from "uuid";
 const SALT_ROUNDS = 10;
-export const createUser = (username, password) => __awaiter(void 0, void 0, void 0, function* () {
+export const createUser = (userNamePassword) => __awaiter(void 0, void 0, void 0, function* () {
     const user = {
-        username,
-        password: bcrypt.hashSync(password, SALT_ROUNDS),
+        username: userNamePassword.username,
+        password: bcrypt.hashSync(userNamePassword.password, SALT_ROUNDS),
         id: uuid(),
         books: [],
     };
@@ -35,4 +35,21 @@ export const loginUser = (username, password) => __awaiter(void 0, void 0, void 
         return user;
     }
     return null;
+});
+export const isUserIdExist = (userid) => __awaiter(void 0, void 0, void 0, function* () {
+    const users = yield readUsers();
+    return users.some((user) => user.id === userid);
+});
+export const getUserById = (userid) => __awaiter(void 0, void 0, void 0, function* () {
+    const users = yield readUsers();
+    return users.find((user) => user.id === userid);
+});
+export const updateUser = (userid, user) => __awaiter(void 0, void 0, void 0, function* () {
+    const users = yield readUsers();
+    const index = users.findIndex((u) => u.id === userid);
+    if (index === -1) {
+        throw new Error("User not found");
+    }
+    users[index] = user;
+    yield rewriteUsers(users);
 });

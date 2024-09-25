@@ -8,20 +8,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import jsonfile from "jsonfile";
+import dotenv from "dotenv";
+dotenv.config();
+const DB_PATH = process.env.DB_PATH || "./data/db.json";
 import fs from "fs";
 function ensureJsonFileExists() {
-    if (!fs.existsSync("./data/db.json")) {
-        jsonfile.writeFileSync("./data/db.json", []);
+    if (!fs.existsSync(DB_PATH)) {
+        jsonfile.writeFileSync(DB_PATH, []);
     }
 }
 export const writeUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
     ensureJsonFileExists();
     const users = yield readUsers();
     users.push(user);
-    yield jsonfile.writeFile("./data/db.json", users);
+    yield jsonfile.writeFile(DB_PATH, users);
 });
 export const readUsers = () => __awaiter(void 0, void 0, void 0, function* () {
     ensureJsonFileExists();
-    const users = yield jsonfile.readFile("./data/db.json");
+    const users = yield jsonfile.readFile(DB_PATH);
     return users;
+});
+export const rewriteUsers = (users) => __awaiter(void 0, void 0, void 0, function* () {
+    ensureJsonFileExists();
+    yield jsonfile.writeFile(DB_PATH, users);
 });
