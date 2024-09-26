@@ -67,6 +67,7 @@ export const getBeepersByStatus = (req, res, next) => __awaiter(void 0, void 0, 
         const status = req.params.status;
         const byStatus = Object.keys(BeeperStatus).indexOf(status);
         const beepers = yield beeperService.getBeepersByStatus(byStatus);
+        res.status(200).send(beepers);
     }
     catch (err) {
         next(err);

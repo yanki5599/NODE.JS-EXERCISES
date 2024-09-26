@@ -51,7 +51,8 @@ const deleteBeeper = (beeperId) => __awaiter(void 0, void 0, void 0, function* (
     if (beeperToDeleteIdx === -1)
         throw new ErrorWithStatusCode("Beeper not found!", 400);
     // cancel timer if set
-    cancelDetonation(beeperId);
+    if ((yield getBeeperById(beeperId)).status == BeeperStatus.DEPLOYED)
+        cancelDetonation(beeperId);
     // remove beeper
     beepers.splice(beeperToDeleteIdx, 1);
     yield jsonService.rewriteBeepers(beepers);

@@ -49,7 +49,8 @@ const deleteBeeper = async (beeperId: string): Promise<void> => {
   if (beeperToDeleteIdx === -1)
     throw new ErrorWithStatusCode("Beeper not found!", 400);
   // cancel timer if set
-  cancelDetonation(beeperId);
+  if ((await getBeeperById(beeperId)).status == BeeperStatus.DEPLOYED)
+    cancelDetonation(beeperId);
   // remove beeper
   beepers.splice(beeperToDeleteIdx, 1);
   await jsonService.rewriteBeepers(beepers);
