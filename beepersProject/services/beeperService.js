@@ -112,7 +112,7 @@ export default {
     getBeeperById,
     getBeepersByStatus,
 };
-function validateCoordinates(lon, lat) {
+function validateCoordinates(lat, lon) {
     if (!lat || !lon)
         throw new ErrorWithStatusCode("longitude and latitude required!", 400);
     if (!coordinates.find((cor) => cor.lat === lat && cor.lon === lon))

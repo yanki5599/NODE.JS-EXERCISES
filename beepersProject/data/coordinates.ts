@@ -1,4 +1,4 @@
-export const coordinates: { lon: number; lat: number }[] = [
+export const coordinates: { lat: number; lon: number }[] = [
   { lat: 34.59708, lon: 35.78674 },
   { lat: 33.72141, lon: 36.59793 },
   { lat: 33.5089, lon: 35.85089 },
