@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { ErrorWithStatusCode } from "../ErrorsModels/errorTypes.js";
 import { Beeper, BeeperStatus } from "../models/types.js";
 import beeperService from "../services/beeperService.js";
+import { normalizeStatusDisplay } from "../utils.js";
 
 export const getBeepers = async (
   req: Request,
@@ -10,7 +11,7 @@ export const getBeepers = async (
 ): Promise<void> => {
   try {
     const beepers = await beeperService.getBeepers();
-    res.status(200).send(beepers);
+    res.status(200).send(normalizeStatusDisplay(...beepers));
   } catch (err) {
     next(err);
   }
@@ -25,7 +26,7 @@ export const addBeeper = async (
     if (!beeperName)
       throw new ErrorWithStatusCode("beeperName is required!", 400);
     const added = await beeperService.addBeeper(beeperName);
-    res.status(201).send(added);
+    res.status(201).send(...normalizeStatusDisplay(added));
   } catch (err) {
     next(err);
   }
@@ -38,8 +39,13 @@ export const updateBeeperStatus = async (
   try {
     const beeperId = req.params.id;
     const { latitude, longitude } = req.body;
-    await beeperService.updateBeeperStatus(beeperId, +latitude, +longitude);
-    res.status(204).send();
+    const beeper = await beeperService.updateBeeperStatus(
+      beeperId,
+      +latitude,
+      +longitude
+    );
+
+    res.status(200).send({ status: BeeperStatus[beeper.status as number] });
   } catch (err) {
     next(err);
   }
@@ -65,7 +71,7 @@ export const getBeeperById = async (
   try {
     const beeperId = req.params.id;
     const beeper = await beeperService.getBeeperById(beeperId);
-    res.status(200).send(beeper);
+    res.status(200).send(...normalizeStatusDisplay(beeper));
   } catch (err) {
     next(err);
   }
@@ -81,7 +87,7 @@ export const getBeepersByStatus = async (
     const beepers = await beeperService.getBeepersByStatus(
       byStatus as BeeperStatus
     );
-    res.status(200).send(beepers);
+    res.status(200).send(normalizeStatusDisplay(...beepers));
   } catch (err) {
     next(err);
   }

@@ -8,6 +8,10 @@ export interface Beeper {
   longitude?: number;
 }
 
+export interface BeeperDTO extends Omit<Beeper, "status"> {
+  status: string;
+}
+
 // do Not change the order!! order matters
 export enum BeeperStatus {
   MANUFACTURED,

@@ -44,6 +44,7 @@ const updateBeeperStatus = (beeperId, lat, lon) => __awaiter(void 0, void 0, voi
     // any way: status -> next status
     beeper.status++;
     yield jsonService.rewriteBeepers(beepers);
+    return beeper;
 });
 const deleteBeeper = (beeperId) => __awaiter(void 0, void 0, void 0, function* () {
     const beepers = yield jsonService.readBeepers();

@@ -25,7 +25,7 @@ const updateBeeperStatus = async (
   beeperId: string,
   lat?: number,
   lon?: number
-): Promise<void> => {
+): Promise<Beeper> => {
   const { beepers, beeper } = await getBeepersWithBeeperById(beeperId);
   // check status
   if (beeper.status >= BeeperStatus.DEPLOYED)
@@ -40,6 +40,7 @@ const updateBeeperStatus = async (
   // any way: status -> next status
   beeper.status++;
   await jsonService.rewriteBeepers(beepers);
+  return beeper;
 };
 const deleteBeeper = async (beeperId: string): Promise<void> => {
   const beepers: Beeper[] = await jsonService.readBeepers();
@@ -83,7 +84,6 @@ async function explodeBeeper(beeperId: string): Promise<void> {
   beeper.detonated_at = new Date();
   await jsonService.rewriteBeepers(beepers);
   removeExplodingBeeper(beeperId);
-  console.log("beeper exploded");
 }
 
 function removeExplodingBeeper(beeperId: string) {

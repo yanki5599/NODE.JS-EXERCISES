@@ -10,10 +10,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { ErrorWithStatusCode } from "../ErrorsModels/errorTypes.js";
 import { BeeperStatus } from "../models/types.js";
 import beeperService from "../services/beeperService.js";
+import { normalizeStatusDisplay } from "../utils.js";
 export const getBeepers = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const beepers = yield beeperService.getBeepers();
-        res.status(200).send(beepers);
+        res.status(200).send(normalizeStatusDisplay(...beepers));
     }
     catch (err) {
         next(err);
@@ -25,7 +26,7 @@ export const addBeeper = (req, res, next) => __awaiter(void 0, void 0, void 0, f
         if (!beeperName)
             throw new ErrorWithStatusCode("beeperName is required!", 400);
         const added = yield beeperService.addBeeper(beeperName);
-        res.status(201).send(added);
+        res.status(201).send(...normalizeStatusDisplay(added));
     }
     catch (err) {
         next(err);
@@ -35,8 +36,8 @@ export const updateBeeperStatus = (req, res, next) => __awaiter(void 0, void 0, 
     try {
         const beeperId = req.params.id;
         const { latitude, longitude } = req.body;
-        yield beeperService.updateBeeperStatus(beeperId, +latitude, +longitude);
-        res.status(204).send();
+        const beeper = yield beeperService.updateBeeperStatus(beeperId, +latitude, +longitude);
+        res.status(200).send({ status: BeeperStatus[beeper.status] });
     }
     catch (err) {
         next(err);
@@ -56,7 +57,7 @@ export const getBeeperById = (req, res, next) => __awaiter(void 0, void 0, void 
     try {
         const beeperId = req.params.id;
         const beeper = yield beeperService.getBeeperById(beeperId);
-        res.status(200).send(beeper);
+        res.status(200).send(...normalizeStatusDisplay(beeper));
     }
     catch (err) {
         next(err);
@@ -67,7 +68,7 @@ export const getBeepersByStatus = (req, res, next) => __awaiter(void 0, void 0, 
         const status = req.params.status;
         const byStatus = Object.keys(BeeperStatus).indexOf(status);
         const beepers = yield beeperService.getBeepersByStatus(byStatus);
-        res.status(200).send(beepers);
+        res.status(200).send(normalizeStatusDisplay(...beepers));
     }
     catch (err) {
         next(err);
