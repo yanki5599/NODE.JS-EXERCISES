@@ -2,7 +2,7 @@ import * as jsonService from "../DAL/jsonBeepers.js";
 import { ErrorWithStatusCode } from "../ErrorsModels/errorTypes.js";
 import { Beeper, BeeperStatus, BeeperTimer } from "../models/types.js";
 import { v4 as uuid } from "uuid";
-import coordinates from "../data/coordinates.js";
+import { coordinates } from "../data/coordinates.js";
 const EXP_TIME_SEC: number = 10;
 const EXP_TIME_MS: number = EXP_TIME_SEC * 1000;
 
@@ -28,17 +28,16 @@ const updateBeeperStatus = async (
 ): Promise<void> => {
   const { beepers, beeper } = await getBeepersWithBeeperById(beeperId);
   // check status
-
-  if (beeper.status === BeeperStatus.DEPLOYED)
+  if (beeper.status >= BeeperStatus.DEPLOYED)
     throw new ErrorWithStatusCode("beeper already deployed.", 400);
   if (beeper.status === BeeperStatus.SHIPPED) {
     // deploy and set timer for detonation
-    setDetonationTimer(beeperId);
     validateCoordinates(lat, lon);
+    setDetonationTimer(beeperId);
     beeper.latitude = lat;
     beeper.longitude = lon;
   }
-  // status -> next status
+  // any way: status -> next status
   beeper.status++;
   await jsonService.rewriteBeepers(beepers);
 };
@@ -77,14 +76,9 @@ function setDetonationTimer(beeperId: string) {
 
 async function explodeBeeper(beeperId: string): Promise<void> {
   // change beeper status to detonated
-  const beepers = await jsonService.readBeepers();
-  const beeper = beepers.find((b) => b.id === beeperId);
-  if (!beeper)
-    throw new ErrorWithStatusCode(
-      "Internal error exploding beeper! beeper not found",
-      500
-    );
+  const { beepers, beeper } = await getBeepersWithBeeperById(beeperId);
   beeper.status = BeeperStatus.DETONATED;
+  beeper.detonated_at = new Date();
   await jsonService.rewriteBeepers(beepers);
   removeExplodingBeeper(beeperId);
 }
@@ -124,7 +118,8 @@ export default {
   getBeepersByStatus,
 };
 function validateCoordinates(lon?: number, lat?: number): void {
-  throw new Error("not implemented");
   if (!lat || !lon)
     throw new ErrorWithStatusCode("longitude and latitude required!", 400);
+  if (!coordinates.find((cor) => cor.lat === lat && cor.lon === lon))
+    throw new ErrorWithStatusCode("Invalid coordinates", 400);
 }

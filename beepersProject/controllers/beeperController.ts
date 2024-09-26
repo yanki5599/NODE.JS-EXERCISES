@@ -11,6 +11,7 @@ export const getBeepers = async (
 ): Promise<void> => {
   try {
     const beepers = await beeperService.getBeepers();
+    res.status(200).send(beepers);
   } catch (err) {
     next(err);
   }
@@ -33,7 +34,7 @@ export const updateBeeperStatus = async (
   try {
     const beeperId = req.params.id;
     const { latitude, longitude } = req.body;
-    await beeperService.updateBeeperStatus(beeperId, latitude, longitude);
+    await beeperService.updateBeeperStatus(beeperId, +latitude, +longitude);
     res.status(204).send();
   } catch (err) {
     next(err);
