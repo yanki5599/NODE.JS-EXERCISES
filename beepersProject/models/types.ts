@@ -4,8 +4,8 @@ export interface Beeper {
   status: BeeperStatus;
   created_at: Date;
   detonated_at?: Date;
-  latitude?: Number;
-  longitude?: Number;
+  latitude?: number;
+  longitude?: number;
 }
 
 // do Not change the order!! order matters

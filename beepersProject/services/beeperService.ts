@@ -2,7 +2,7 @@ import * as jsonService from "../DAL/jsonBeepers.js";
 import { ErrorWithStatusCode } from "../ErrorsModels/errorTypes.js";
 import { Beeper, BeeperStatus, BeeperTimer } from "../models/types.js";
 import { v4 as uuid } from "uuid";
-
+import coordinates from "../data/coordinates.js";
 const EXP_TIME_SEC: number = 10;
 const EXP_TIME_MS: number = EXP_TIME_SEC * 1000;
 
@@ -21,16 +21,22 @@ const addBeeper = async (beeperName: string): Promise<Beeper> => {
   await jsonService.writeBeeper(newBeeper);
   return newBeeper;
 };
-const updateBeeperStatus = async (beeperId: string): Promise<void> => {
-  const beepers: Beeper[] = await jsonService.readBeepers();
-  const beeper = beepers.find((b) => b.id === beeperId);
-  if (!beeper) throw new ErrorWithStatusCode("beeper not found!", 404);
+const updateBeeperStatus = async (
+  beeperId: string,
+  lat?: number,
+  lon?: number
+): Promise<void> => {
+  const { beepers, beeper } = await getBeepersWithBeeperById(beeperId);
   // check status
+
   if (beeper.status === BeeperStatus.DEPLOYED)
     throw new ErrorWithStatusCode("beeper already deployed.", 400);
   if (beeper.status === BeeperStatus.SHIPPED) {
     // deploy and set timer for detonation
     setDetonationTimer(beeperId);
+    validateCoordinates(lat, lon);
+    beeper.latitude = lat;
+    beeper.longitude = lon;
   }
   // status -> next status
   beeper.status++;
@@ -97,6 +103,16 @@ function cancelDetonation(beeperId: string) {
   if (!explodingBeeper)
     throw new Error("cannot cancel explosion, timer not found");
   clearTimeout(explodingBeeper.timerId);
+  removeExplodingBeeper(beeperId);
+}
+
+async function getBeepersWithBeeperById(
+  beeperId: string
+): Promise<{ beepers: Beeper[]; beeper: Beeper }> {
+  const beepers: Beeper[] = await jsonService.readBeepers();
+  const beeper = beepers.find((b) => b.id === beeperId);
+  if (!beeper) throw new ErrorWithStatusCode("beeper not found!", 404);
+  return { beepers, beeper };
 }
 
 export default {
@@ -107,3 +123,8 @@ export default {
   getBeeperById,
   getBeepersByStatus,
 };
+function validateCoordinates(lon?: number, lat?: number): void {
+  throw new Error("not implemented");
+  if (!lat || !lon)
+    throw new ErrorWithStatusCode("longitude and latitude required!", 400);
+}

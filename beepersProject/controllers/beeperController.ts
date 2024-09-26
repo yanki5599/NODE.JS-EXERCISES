@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { ErrorWithStatusCode } from "../ErrorsModels/errorTypes.js";
-import { Beeper } from "../models/types.js";
+import { Beeper, BeeperStatus } from "../models/types.js";
 import beeperService from "../services/beeperService.js";
+import { errorMiddleware } from "../middleware/errorMiddleware.js";
 
 export const getBeepers = async (
   req: Request,
@@ -30,6 +31,10 @@ export const updateBeeperStatus = async (
   next: NextFunction
 ): Promise<void> => {
   try {
+    const beeperId = req.params.id;
+    const { latitude, longitude } = req.body;
+    await beeperService.updateBeeperStatus(beeperId, latitude, longitude);
+    res.status(204).send();
   } catch (err) {
     next(err);
   }
