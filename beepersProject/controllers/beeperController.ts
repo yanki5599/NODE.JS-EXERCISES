@@ -9,6 +9,7 @@ export const getBeepers = async (
   next: NextFunction
 ): Promise<void> => {
   try {
+    const beepers = await beeperService.getBeepers();
   } catch (err) {
     next(err);
   }

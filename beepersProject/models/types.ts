@@ -2,16 +2,22 @@ export interface Beeper {
   id: string;
   name: string;
   status: BeeperStatus;
-  createdAt: Date;
-  detonatedAt: Date;
-  LON: number;
-  LAT: number;
+  created_at: Date;
+  detonated_at?: Date;
+  latitude?: Number;
+  longitude?: Number;
 }
 
-enum BeeperStatus {
-  manufactured,
-  assembled,
-  shipped,
-  deployed,
-  detonated,
+// do Not change the order!! order matters
+export enum BeeperStatus {
+  MANUFACTURED,
+  ASSEMBLED,
+  SHIPPED,
+  DEPLOYED,
+  DETONATED,
+}
+
+export interface BeeperTimer {
+  beeperId: string;
+  timerId: NodeJS.Timeout;
 }
