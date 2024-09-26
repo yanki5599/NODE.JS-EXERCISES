@@ -68,7 +68,7 @@ const getBeepersByStatus = async (status: BeeperStatus) => {
 
 function setDetonationTimer(beeperId: string) {
   const timer: NodeJS.Timeout = setTimeout(
-    () => explodeBeeper(beeperId),
+    async () => await explodeBeeper(beeperId),
     EXP_TIME_MS
   );
   explodingBeepers.push({ beeperId, timerId: timer });
@@ -77,10 +77,12 @@ function setDetonationTimer(beeperId: string) {
 async function explodeBeeper(beeperId: string): Promise<void> {
   // change beeper status to detonated
   const { beepers, beeper } = await getBeepersWithBeeperById(beeperId);
+
   beeper.status = BeeperStatus.DETONATED;
   beeper.detonated_at = new Date();
   await jsonService.rewriteBeepers(beepers);
   removeExplodingBeeper(beeperId);
+  console.log("beeper exploded");
 }
 
 function removeExplodingBeeper(beeperId: string) {

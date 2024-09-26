@@ -69,7 +69,7 @@ const getBeepersByStatus = (status) => __awaiter(void 0, void 0, void 0, functio
     return filtered;
 });
 function setDetonationTimer(beeperId) {
-    const timer = setTimeout(() => explodeBeeper(beeperId), EXP_TIME_MS);
+    const timer = setTimeout(() => __awaiter(this, void 0, void 0, function* () { return yield explodeBeeper(beeperId); }), EXP_TIME_MS);
     explodingBeepers.push({ beeperId, timerId: timer });
 }
 function explodeBeeper(beeperId) {
@@ -80,6 +80,7 @@ function explodeBeeper(beeperId) {
         beeper.detonated_at = new Date();
         yield jsonService.rewriteBeepers(beepers);
         removeExplodingBeeper(beeperId);
+        console.log("beeper exploded");
     });
 }
 function removeExplodingBeeper(beeperId) {
