@@ -2,9 +2,9 @@ import express, { Router } from "express";
 import {
   getBeepers,
   addBeeper,
-  updateBeeper,
+  updateBeeperStatus,
   deleteBeeper,
-  getBeeper,
+  getBeeperById,
   getBeepersByStatus,
 } from "../controllers/beeperController.js";
 
@@ -12,9 +12,9 @@ const router: Router = express.Router();
 
 router.route("/").get(getBeepers).post(addBeeper);
 
-router.route("/:id").get(getBeeper).delete(deleteBeeper);
+router.route("/:id").get(getBeeperById).delete(deleteBeeper);
 
-router.route("/:id/status").put(getBeeper);
+router.route("/:id/status").put(updateBeeperStatus);
 
 router.route("/status/:status").get(getBeepersByStatus);
 

@@ -1,19 +1,19 @@
-import dotenv from "dotenv";
-import { Book } from "../models/types.js";
-import axios from "axios";
+import * as jsonService from "../DAL/jsonBeepers.js";
 import { ErrorWithStatusCode } from "../ErrorsModels/errorTypes.js";
-dotenv.config();
+import { Beeper } from "../models/types.js";
 
-const API_URL: string | undefined = process.env.API_URL;
-export const fetchBookInfo = async (bookTitleName: string): Promise<Book> => {
-  const response = await axios.get(`${API_URL}?search=${bookTitleName}`);
-  const book = await response.data[0];
-  if (!book) throw new ErrorWithStatusCode("Book not found", 404);
-  return book;
-};
+const getBeepers = async () => {};
+const addBeeper = async () => {};
+const updateBeeperStatus = async () => {};
+const deleteBeeper = async () => {};
+const getBeeperById = async () => {};
+const getBeepersByStatus = async () => {};
 
-export const fetchAllBooksNames = async (): Promise<string[]> => {
-  const response = await axios.get(`${API_URL}`);
-  const books: Book[] = await response.data;
-  return books.map((book: Book) => book.title);
+export default {
+  getBeepers,
+  addBeeper,
+  updateBeeperStatus,
+  deleteBeeper,
+  getBeeperById,
+  getBeepersByStatus,
 };

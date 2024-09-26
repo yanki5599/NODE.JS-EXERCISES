@@ -1,5 +1,5 @@
 import jsonfile from "jsonfile";
-import { User } from "../models/types.js";
+import { Beeper } from "../models/types.js";
 import dotenv from "dotenv";
 dotenv.config();
 const DB_PATH: string = process.env.DB_PATH || "./data/db.json";
@@ -11,20 +11,20 @@ function ensureJsonFileExists() {
     jsonfile.writeFileSync(DB_PATH, []);
   }
 }
-export const writeUser = async (user: User): Promise<void> => {
+export const writeBeeper = async (beeper: Beeper): Promise<void> => {
   ensureJsonFileExists();
-  const users = await readUsers();
-  users.push(user);
-  await jsonfile.writeFile(DB_PATH, users);
+  const beepers = await readBeepers();
+  beepers.push(beeper);
+  await jsonfile.writeFile(DB_PATH, beepers);
 };
 
-export const readUsers = async (): Promise<User[]> => {
+export const readBeepers = async (): Promise<Beeper[]> => {
   ensureJsonFileExists();
-  const users = await jsonfile.readFile(DB_PATH);
-  return users;
+  const beepers = await jsonfile.readFile(DB_PATH);
+  return beepers;
 };
 
-export const rewriteUsers = async (users: User[]): Promise<void> => {
+export const rewriteBeepers = async (beepers: Beeper[]): Promise<void> => {
   ensureJsonFileExists();
-  await jsonfile.writeFile(DB_PATH, users);
+  await jsonfile.writeFile(DB_PATH, beepers);
 };

@@ -1,7 +1,5 @@
 import express, { Application } from "express";
 import beepersRouter from "./routes/beepers.js";
-import bookRouter from "./routes/beepers.js";
-import { authenticateId } from "./middleware/authMiddleware.js";
 import dotenv from "dotenv";
 import { errorMiddleware } from "./middleware/errorMiddleware.js";
 import cors from "cors";
