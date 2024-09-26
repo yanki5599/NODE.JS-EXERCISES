@@ -10,7 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 // api for beepers
-app.use("/beepers", beepersRouter);
+app.use("/api/beepers", beepersRouter);
 // error middleware
 app.use(errorMiddleware);
 app.listen(PORT, () => {

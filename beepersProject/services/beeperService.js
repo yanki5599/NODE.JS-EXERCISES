@@ -82,7 +82,6 @@ function explodeBeeper(beeperId) {
         beeper.detonated_at = new Date();
         yield jsonService.rewriteBeepers(beepers);
         removeExplodingBeeper(beeperId);
-        console.log("beeper exploded");
     });
 }
 function removeExplodingBeeper(beeperId) {

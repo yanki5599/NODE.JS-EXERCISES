@@ -22,7 +22,7 @@ export const getBeepers = (req, res, next) => __awaiter(void 0, void 0, void 0, 
 });
 export const addBeeper = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const beeperName = req.body.beeperName;
+        const beeperName = req.body.name;
         if (!beeperName)
             throw new ErrorWithStatusCode("beeperName is required!", 400);
         const added = yield beeperService.addBeeper(beeperName);
@@ -35,8 +35,8 @@ export const addBeeper = (req, res, next) => __awaiter(void 0, void 0, void 0, f
 export const updateBeeperStatus = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const beeperId = req.params.id;
-        const { latitude, longitude } = req.body;
-        const beeper = yield beeperService.updateBeeperStatus(beeperId, +latitude, +longitude);
+        const { LON, LAT } = req.body;
+        const beeper = yield beeperService.updateBeeperStatus(beeperId, +LAT, +LON);
         res.status(200).send({ status: BeeperStatus[beeper.status] });
     }
     catch (err) {

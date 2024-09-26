@@ -22,7 +22,7 @@ export const addBeeper = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const beeperName: string | undefined = req.body.beeperName;
+    const beeperName: string | undefined = req.body.name;
     if (!beeperName)
       throw new ErrorWithStatusCode("beeperName is required!", 400);
     const added = await beeperService.addBeeper(beeperName);
@@ -38,12 +38,8 @@ export const updateBeeperStatus = async (
 ): Promise<void> => {
   try {
     const beeperId = req.params.id;
-    const { latitude, longitude } = req.body;
-    const beeper = await beeperService.updateBeeperStatus(
-      beeperId,
-      +latitude,
-      +longitude
-    );
+    const { LON, LAT } = req.body;
+    const beeper = await beeperService.updateBeeperStatus(beeperId, +LAT, +LON);
 
     res.status(200).send({ status: BeeperStatus[beeper.status as number] });
   } catch (err) {
