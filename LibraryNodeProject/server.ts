@@ -1,7 +1,7 @@
 import express, { Application } from "express";
 import authRouter from "./routes/auth.js";
 import bookRouter from "./routes/books.js";
-import { authenticateId } from "./middleware/authMiddleware.js";
+import { authMiddleware } from "./middleware/authMiddleware.js";
 import dotenv from "dotenv";
 import { errorMiddleware } from "./middleware/errorMiddleware.js";
 import cors from "cors";
@@ -17,7 +17,7 @@ app.use(cors());
 app.use("/", authRouter);
 
 // check if the token is valid for next routes
-app.use(authenticateId);
+app.use(authMiddleware);
 
 // api for books
 app.use("/books", bookRouter);

@@ -4,21 +4,27 @@ import {
   ErrorWithStatusCode,
   MissingToken,
 } from "../ErrorsModels/errorTypes.js";
-export const authenticateId = async (
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
+export const authMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const userid = req.body.userid || req.query.userid;
+    const token = (req.headers["authorization"] as string)?.split(
+      " "
+    )[1] as string;
+    if (!token) throw new MissingToken();
 
-    if (!userid) {
-      throw new MissingToken();
-    }
+    const decoded = jwt.verify(token, process.env.JWT_KEY as string);
+    const { userid } = decoded as { userid: string };
+
+    (req as any).userid = userid;
     // check if the userid is in the database
     if (!(await isUserIdExist(userid))) {
-      throw new MissingToken("invalid token (userid)");
-      return;
+      throw new ErrorWithStatusCode("missing userId", 400);
     }
   } catch (err) {
     next(err);

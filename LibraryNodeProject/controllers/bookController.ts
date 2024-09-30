@@ -12,7 +12,7 @@ export const getBooks = async (
   next: NextFunction
 ) => {
   try {
-    const userid = req.query.userid?.toString();
+    const userid = (req as any).userid;
     if (!userid) {
       throw new MissingToken("missing token (userid)");
     }
@@ -29,7 +29,7 @@ export const addBook = async (
   next: NextFunction
 ) => {
   try {
-    const userid: string = req.body.userid;
+    const userid = (req as any).userid;
     if (!userid) {
       throw new MissingToken("missing token (userid)");
     }
@@ -51,7 +51,7 @@ export const updateBook = async (
   next: NextFunction
 ) => {
   try {
-    const userid = req.body.userid; // middleware already checked for userid
+    const userid = (req as any).userid;
     const updatedData = req.body.updatedData;
     if (!updatedData) {
       throw new ErrorWithStatusCode("updated data required", 400);
@@ -75,7 +75,7 @@ export const deleteBook = async (
   next: NextFunction
 ) => {
   try {
-    const userid = req.body.userid; // middleware already checked for userid
+    const userid = (req as any).userid;
     const bookId: number = parseInt(req.params?.bookId);
     if (!bookId) {
       throw new ErrorWithStatusCode("book id required", 400);

@@ -10,6 +10,10 @@ import {
   UserAlreadyExists,
   UserNotFoundError,
 } from "../ErrorsModels/errorTypes.js";
+import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
+
+dotenv.config();
 
 const SALT_ROUNDS = 10;
 export const register = async (
@@ -54,7 +58,13 @@ export const login = async (
 
     const found = await loginUser(user.username, user.password);
     if (found) {
-      res.status(200).send({ userid: found.id });
+      const token = jwt.sign(
+        { userid: found.id },
+        process.env.JWT_KEY as string,
+        { expiresIn: "2h" }
+      );
+
+      res.status(200).send({ token });
     } else {
       throw new ErrorWithStatusCode("username and password do not match", 400);
     }

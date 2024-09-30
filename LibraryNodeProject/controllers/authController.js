@@ -9,6 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { createUser, isUsernameExist, loginUser, } from "../services/usersService.js";
 import { ErrorWithStatusCode, UserAlreadyExists, UserNotFoundError, } from "../ErrorsModels/errorTypes.js";
+import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
+dotenv.config();
 const SALT_ROUNDS = 10;
 export const register = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const userNamePassword = {
@@ -40,7 +43,8 @@ export const login = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
         }
         const found = yield loginUser(user.username, user.password);
         if (found) {
-            res.status(200).send({ userid: found.id });
+            const token = jwt.sign({ userid: found.id }, process.env.JWT_KEY, { expiresIn: "2h" });
+            res.status(200).send({ token });
         }
         else {
             throw new ErrorWithStatusCode("username and password do not match", 400);

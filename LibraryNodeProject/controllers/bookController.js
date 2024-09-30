@@ -10,9 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { ErrorWithStatusCode, MissingToken, } from "../ErrorsModels/errorTypes.js";
 import bookService from "../services/bookService.js";
 export const getBooks = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
     try {
-        const userid = (_a = req.query.userid) === null || _a === void 0 ? void 0 : _a.toString();
+        const userid = req.userid;
         if (!userid) {
             throw new MissingToken("missing token (userid)");
         }
@@ -25,7 +24,7 @@ export const getBooks = (req, res, next) => __awaiter(void 0, void 0, void 0, fu
 });
 export const addBook = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const userid = req.body.userid;
+        const userid = req.userid;
         if (!userid) {
             throw new MissingToken("missing token (userid)");
         }
@@ -42,7 +41,7 @@ export const addBook = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
 });
 export const updateBook = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const userid = req.body.userid; // middleware already checked for userid
+        const userid = req.userid;
         const updatedData = req.body.updatedData;
         if (!updatedData) {
             throw new ErrorWithStatusCode("updated data required", 400);
@@ -62,7 +61,7 @@ export const updateBook = (req, res, next) => __awaiter(void 0, void 0, void 0, 
 export const deleteBook = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
-        const userid = req.body.userid; // middleware already checked for userid
+        const userid = req.userid;
         const bookId = parseInt((_a = req.params) === null || _a === void 0 ? void 0 : _a.bookId);
         if (!bookId) {
             throw new ErrorWithStatusCode("book id required", 400);

@@ -23,6 +23,7 @@
     "@types/cors": "^2.8.17",
     "@types/dotenv": "^8.2.0",
     "@types/jsonfile": "^6.1.4",
+    "@types/jsonwebtoken": "^9.0.7",
     "axios": "^1.7.7",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
@@ -30,6 +31,7 @@
     "express": "^4.21.0",
     "http-status-ts": "^2.0.1",
     "jsonfile": "^6.1.0",
+    "jsonwebtoken": "^9.0.2",
     "uuid": "^10.0.0",
     "uuidv4": "^6.2.13"
   }

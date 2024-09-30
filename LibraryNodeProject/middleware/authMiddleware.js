@@ -8,17 +8,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { isUserIdExist } from "../services/usersService.js";
-import { MissingToken, } from "../ErrorsModels/errorTypes.js";
-export const authenticateId = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+import { ErrorWithStatusCode, MissingToken, } from "../ErrorsModels/errorTypes.js";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
+export const authMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const userid = req.body.userid || req.query.userid;
-        if (!userid) {
+        const token = (_a = req.headers["authorization"]) === null || _a === void 0 ? void 0 : _a.split(" ")[1];
+        if (!token)
             throw new MissingToken();
-        }
+        const decoded = jwt.verify(token, process.env.JWT_KEY);
+        const { userid } = decoded;
+        req.userid = userid;
         // check if the userid is in the database
         if (!(yield isUserIdExist(userid))) {
-            throw new MissingToken("invalid token (userid)");
-            return;
+            throw new ErrorWithStatusCode("missing userId", 400);
         }
     }
     catch (err) {
