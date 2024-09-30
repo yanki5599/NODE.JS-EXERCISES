@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="./node_modules/socket.io-client/dist/socket.io.js"></script>
+  </head>
+  <body>
+    <main id="joinPage">
+      <section class="roundedBlockCentered">
+        <form id="joinForm">
+          <label for="username">username</label>
+          <input name="username" type="text" id="username" required />
+          <label for="roomId">room id (name)</label>
+          <input type="text" id="roomId" name="roomId" required />
+          <button type="submit">Join</button>
+        </form>
+      </section>
+    </main>
+    <main id="chatPage">
+      <section id="MsgDashboard">
+        <div id="messageList"></div>
+        <form id="messageForm">
+          <input type="text" name="message" />
+          <button type="submit">send message</button>
+        </form>
+      </section>
+      <section id="usersListSection">
+        <h2>Users Online</h2>
+        <ul id="usersList"></ul>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>

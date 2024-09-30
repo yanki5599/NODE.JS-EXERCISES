@@ -1,0 +1,201 @@
+/* General styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0;
+  margin: 0;
+}
+
+/* Hide the chat page by default */
+#chatPage {
+  display: none;
+}
+
+/* Login page styles */
+#joinPage {
+  /* display: none; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  background-color: #f7f7f7;
+}
+
+.roundedBlockCentered {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin: 10px 0 5px 0;
+  font-weight: bold;
+}
+
+input {
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 100%;
+  font-size: 1rem;
+}
+
+button {
+  padding: 10px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #218838;
+}
+
+/* Chat page styles */
+#chatPage {
+  width: 100%;
+  display: none;
+  flex-direction: row;
+  height: 100vh;
+  background-color: #f0f0f0;
+}
+
+/* Message dashboard styles */
+#MsgDashboard {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: white;
+  border-right: 1px solid #ddd;
+  height: 100%;
+}
+
+#messageList {
+  padding: 20px;
+  overflow-y: auto;
+  height: calc(100vh - 80px);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.message {
+  margin-bottom: 15px;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #e9e9eb;
+}
+
+.message.user {
+  background-color: #cce5ff;
+  text-align: right;
+}
+
+#messageForm {
+  display: flex;
+  padding: 10px;
+  background-color: #f7f7f7;
+  border-top: 1px solid #ddd;
+  bottom: 0;
+  width: 100%;
+}
+
+#messageForm input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+#messageForm button {
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+#messageForm button:hover {
+  background-color: #0056b3;
+}
+
+/* User list section */
+#usersListSection {
+  flex: 1;
+  padding: 20px;
+  background-color: #f8f9fa;
+}
+
+#usersList {
+  list-style: none;
+}
+
+#usersList li {
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+#messageList li {
+  list-style: none;
+  position: relative;
+  background: #f1f1f1; /* Light grey background */
+  border-radius: 20px;
+  padding: 10px 15px;
+  margin: 10px 0;
+  max-width: 250px;
+  word-wrap: break-word;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+#messageList li:before {
+  content: "";
+  position: absolute;
+  top: 15px;
+  left: -10px;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  border-right-color: #f1f1f1; /* Same color as the background */
+  border-left: 0;
+  border-bottom: 0;
+  margin-top: -5px;
+}
+
+#messageList li.right {
+  background: #d1eaff; /* Light blue for the right bubble */
+  align-self: flex-end;
+}
+
+#messageList li.right:before {
+  left: auto;
+  right: -10px;
+  border-right-color: transparent;
+  border-left-color: #d1eaff; /* Same color as the right bubble */
+}
