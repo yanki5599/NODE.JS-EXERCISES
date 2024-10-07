@@ -6,12 +6,18 @@ import authRouter from "./routes/authRouter.js";
 import studentRouter from "./routes/studentRouter.js";
 import teacherRouter from "./routes/teacherRouter.js";
 import { authMiddleware } from "./middleware/authMiddleware.js";
-dotenv.config();
+import { connectDB } from "./config/db.js";
+import cookieParser from "cookie-parser";
 
+dotenv.config();
+connectDB();
 const app: Application = express();
 
 const PORT = process.env.PORT || 5000;
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use("/", authRouter);
 
 app.use(authMiddleware);

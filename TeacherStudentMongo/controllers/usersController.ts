@@ -11,7 +11,7 @@ export const getAllUsers = asyncHandler(
 
 export const getUserById = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    const user = await userService.getUserById(req.params.id);
+    const user = await userService.getUserByPassportId(req.params.id);
     res.status(200).json({ success: true, data: user });
   }
 );

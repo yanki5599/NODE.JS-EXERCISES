@@ -5,7 +5,7 @@ export const teacherMiddleware = (
   next: NextFunction
 ) => {
   if ((req as any).user.role !== "teacher") {
-    return res.status(401).json({ message: "Unauthorized" });
+    return res.status(403).json({ message: "Forbidden" });
   }
   next();
 };

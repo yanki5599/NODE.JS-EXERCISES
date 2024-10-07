@@ -1,8 +1,7 @@
-import { match } from "assert";
 import { Role } from "./role.js";
 import mongoose from "mongoose";
 
-interface IGrade {
+export interface IGrade {
   subject: string;
   grade: number;
 }
@@ -11,7 +10,7 @@ export interface IUser extends mongoose.Document {
   fullName: string;
   passportId: string;
   password: string;
-  grades?: IGrade[];
+  grades: IGrade[];
   role: Role;
 }
 
@@ -37,7 +36,8 @@ const userSchema: mongoose.Schema<IUser> = new mongoose.Schema({
   },
   passportId: {
     type: String,
-    length: 9,
+    maxlength: 9,
+    minlength: 9,
     match: [/\d{9}/, "Passport ID is not valid"],
     unique: true,
   },
@@ -51,7 +51,7 @@ const userSchema: mongoose.Schema<IUser> = new mongoose.Schema({
     type: String,
     required: true,
     trim: true,
-    enum: [Role.STUDENT, Role.TEACHER],
+    enum: [...Object.values(Role)],
     default: Role.STUDENT,
   },
 });
