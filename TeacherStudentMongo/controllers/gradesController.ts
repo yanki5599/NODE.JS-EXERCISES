@@ -24,7 +24,7 @@ export const addGrade = asyncHandler(
 );
 export const removeGrade = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    await userService.removeGrade(req.params.id, req.params.gradeSubject);
+    await userService.removeGrade(req.params.id, req.body.gradeSubject);
     res.status(200).json({ success: true });
   }
 );

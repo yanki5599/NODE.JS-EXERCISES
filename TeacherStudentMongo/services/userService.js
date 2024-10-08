@@ -45,6 +45,9 @@ export const getAllUsers = () => __awaiter(void 0, void 0, void 0, function* () 
     return yield UserModel.find();
 });
 export const getUserByPassportId = (passportId) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!passportId) {
+        throw new ErrorWithStatusCode("passportId is required", 400);
+    }
     const user = yield UserModel.findOne({ passportId });
     if (!user) {
         throw new ErrorWithStatusCode("User not found", 404);
@@ -52,17 +55,23 @@ export const getUserByPassportId = (passportId) => __awaiter(void 0, void 0, voi
     return user;
 });
 export function getAverageGrade(wantedUser) {
+    if (wantedUser.grades.length === 0) {
+        return 0;
+    }
     return (wantedUser.grades.reduce((a, b) => a + b.grade, 0) /
         wantedUser.grades.length);
 }
 export const addGrade = (passportId, newGrade) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("passportId:", passportId);
     if (!passportId) {
         throw new ErrorWithStatusCode("passportId is required", 400);
     }
     if (!newGrade) {
         throw new ErrorWithStatusCode("grade is required", 400);
     }
-    const wantedUser = yield UserModel.findOne({ passportId });
+    const wantedUser = yield UserModel.findOne({
+        passportId: passportId,
+    });
     if (!wantedUser) {
         throw new Error("User not found");
     }
@@ -70,11 +79,20 @@ export const addGrade = (passportId, newGrade) => __awaiter(void 0, void 0, void
     wantedUser.save();
 });
 export const removeGrade = (passportId, gradeSubject) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!passportId) {
+        throw new ErrorWithStatusCode("passportId is required", 400);
+    }
+    if (!gradeSubject) {
+        throw new ErrorWithStatusCode("gradeSubject is required", 400);
+    }
     const wantedUser = yield getUserByPassportId(passportId);
     wantedUser.grades = wantedUser.grades.filter((g) => g.subject !== gradeSubject);
     wantedUser.save();
 });
 export const updateGrade = (passportId, newGrade) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!passportId) {
+        throw new ErrorWithStatusCode("passportId is required", 400);
+    }
     const user = yield getUserByPassportId(passportId);
     user.grades = user.grades.filter((g) => g.subject !== newGrade.subject);
     user.grades.push(newGrade);

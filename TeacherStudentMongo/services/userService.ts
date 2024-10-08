@@ -48,6 +48,9 @@ export const getAllUsers = async (): Promise<IUser[]> => {
 export const getUserByPassportId = async (
   passportId: string
 ): Promise<IUser> => {
+  if (!passportId) {
+    throw new ErrorWithStatusCode("passportId is required", 400);
+  }
   const user = await UserModel.findOne({ passportId });
   if (!user) {
     throw new ErrorWithStatusCode("User not found", 404);
@@ -55,6 +58,9 @@ export const getUserByPassportId = async (
   return user;
 };
 export function getAverageGrade(wantedUser: IUser): number {
+  if (wantedUser.grades.length === 0) {
+    return 0;
+  }
   return (
     wantedUser.grades.reduce((a: number, b: IGrade) => a + b.grade, 0) /
     wantedUser.grades.length
@@ -65,6 +71,8 @@ export const addGrade = async (
   passportId: string,
   newGrade: IGrade
 ): Promise<void> => {
+  console.log("passportId:", passportId);
+
   if (!passportId) {
     throw new ErrorWithStatusCode("passportId is required", 400);
   }
@@ -72,7 +80,9 @@ export const addGrade = async (
     throw new ErrorWithStatusCode("grade is required", 400);
   }
 
-  const wantedUser: IUser | null = await UserModel.findOne({ passportId });
+  const wantedUser: IUser | null = await UserModel.findOne({
+    passportId: passportId,
+  });
   if (!wantedUser) {
     throw new Error("User not found");
   }
@@ -84,6 +94,12 @@ export const removeGrade = async (
   passportId: string,
   gradeSubject: string
 ): Promise<void> => {
+  if (!passportId) {
+    throw new ErrorWithStatusCode("passportId is required", 400);
+  }
+  if (!gradeSubject) {
+    throw new ErrorWithStatusCode("gradeSubject is required", 400);
+  }
   const wantedUser: IUser = await getUserByPassportId(passportId);
 
   wantedUser.grades = wantedUser.grades.filter(
@@ -96,6 +112,9 @@ export const updateGrade = async (
   passportId: string,
   newGrade: IGrade
 ): Promise<void> => {
+  if (!passportId) {
+    throw new ErrorWithStatusCode("passportId is required", 400);
+  }
   const user = await getUserByPassportId(passportId);
   user.grades = user.grades.filter((g) => g.subject !== newGrade.subject);
   user.grades.push(newGrade);

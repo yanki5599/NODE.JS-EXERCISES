@@ -23,12 +23,10 @@ export const login = asyncHandler((req, res, next) => __awaiter(void 0, void 0, 
         secure: process.env.NODE_ENV === "production",
         maxAge: 3600000,
     });
-    res
-        .status(200)
-        .json({ message: "User logged in successfully", data: user });
+    res.status(200).json({ message: "User logged in successfully" });
 }));
 export const register = asyncHandler((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const newUser = req.body;
     const added = yield userService.createUser(newUser);
-    res.status(201).json({ message: "User created successfully", data: added });
+    res.status(201).json({ message: "User created successfully" });
 }));

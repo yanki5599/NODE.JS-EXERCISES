@@ -24,7 +24,7 @@ export const addGrade = asyncHandler((req, res, next) => __awaiter(void 0, void 
     res.status(200).json({ success: true });
 }));
 export const removeGrade = asyncHandler((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    yield userService.removeGrade(req.params.id, req.params.gradeSubject);
+    yield userService.removeGrade(req.params.id, req.body.gradeSubject);
     res.status(200).json({ success: true });
 }));
 export const updateGrade = asyncHandler((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {

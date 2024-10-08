@@ -7,7 +7,7 @@ const router = Router();
 router.use(teacherMiddleware);
 
 router
-  .route("/:id")
+  .route("/grade/:id")
   .get(gradesController.getGrades)
   .post(gradesController.addGrade)
   .delete(gradesController.removeGrade)
