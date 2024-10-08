@@ -41,4 +41,7 @@ export const getAverageGrade = asyncHandler((req, res, next) => __awaiter(void 0
     const avgGrade = yield userService.getAverageGrade(wantedUser);
     res.status(200).json({ success: true, data: avgGrade });
 }));
-export const getUsersAverage = asyncHandler((req, res, next) => __awaiter(void 0, void 0, void 0, function* () { }));
+export const deleteStudent = asyncHandler((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    yield userService.deleteUser(req.params.id);
+    res.status(204).json({ success: true });
+}));

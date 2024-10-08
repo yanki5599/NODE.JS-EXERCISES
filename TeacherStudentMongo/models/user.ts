@@ -57,3 +57,5 @@ const userSchema: mongoose.Schema<IUser> = new mongoose.Schema({
 });
 
 export default mongoose.model<IUser>("User", userSchema);
+
+export const GradeModel = mongoose.model<IGrade>("Grade", gradeSchema);

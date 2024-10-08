@@ -15,7 +15,7 @@ router
 
 router.route("/avgGrade/:id").get(gradesController.getAverageGrade);
 
-router.route("/allUsersAverage").get(gradesController.getUsersAverage);
+router.route("/deleteStudent:id").get(gradesController.deleteStudent);
 
 router.route("/allUsers").get(getAllUsers);
 

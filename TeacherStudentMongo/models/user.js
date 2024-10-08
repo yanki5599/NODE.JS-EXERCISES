@@ -41,3 +41,4 @@ const userSchema = new mongoose.Schema({
     },
 });
 export default mongoose.model("User", userSchema);
+export const GradeModel = mongoose.model("Grade", gradeSchema);

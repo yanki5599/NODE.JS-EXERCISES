@@ -1,6 +1,6 @@
 import { error } from "console";
 import { ErrorWithStatusCode } from "../models/errorTypes.js";
-import user, { IUser, IGrade } from "../models/user.js";
+import user, { IUser, IGrade, GradeModel } from "../models/user.js";
 import UserModel from "../models/user.js";
 import bcrypt from "bcrypt";
 import { get } from "http";
@@ -57,15 +57,30 @@ export const getUserByPassportId = async (
   }
   return user;
 };
-export function getAverageGrade(wantedUser: IUser): number {
+export const getAverageGrade = async (wantedUser: IUser): Promise<number> => {
   if (wantedUser.grades.length === 0) {
     return 0;
   }
+
+  //----------------------------------
+  const result = await UserModel.aggregate([
+    {
+      $match: { _id: wantedUser._id },
+    },
+    {
+      $project: {
+        _id: 0,
+        avgGrade: { $avg: "$grades.grade" },
+      },
+    },
+  ]);
+  console.log("result:", result);
+  //-----------------------------------------
   return (
     wantedUser.grades.reduce((a: number, b: IGrade) => a + b.grade, 0) /
     wantedUser.grades.length
   );
-}
+};
 
 export const addGrade = async (
   passportId: string,

@@ -11,6 +11,6 @@ router
     .delete(gradesController.removeGrade)
     .put(gradesController.updateGrade);
 router.route("/avgGrade/:id").get(gradesController.getAverageGrade);
-router.route("/allUsersAverage").get(gradesController.getUsersAverage);
+router.route("/deleteStudent:id").get(gradesController.deleteStudent);
 router.route("/allUsers").get(getAllUsers);
 export default router;

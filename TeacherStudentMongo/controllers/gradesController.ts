@@ -52,6 +52,7 @@ export const getAverageGrade = asyncHandler(
 
 export const deleteStudent = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
-    await userService.deleteUser(deleteStudent);
+    await userService.deleteUser(req.params.id);
+    res.status(204).json({ success: true });
   }
 );

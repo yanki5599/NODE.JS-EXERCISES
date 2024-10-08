@@ -54,13 +54,27 @@ export const getUserByPassportId = (passportId) => __awaiter(void 0, void 0, voi
     }
     return user;
 });
-export function getAverageGrade(wantedUser) {
+export const getAverageGrade = (wantedUser) => __awaiter(void 0, void 0, void 0, function* () {
     if (wantedUser.grades.length === 0) {
         return 0;
     }
+    //----------------------------------
+    const result = yield UserModel.aggregate([
+        {
+            $match: { _id: wantedUser._id },
+        },
+        {
+            $project: {
+                _id: 0,
+                avgGrade: { $avg: "$grades.grade" },
+            },
+        },
+    ]);
+    console.log("result:", result);
+    //-----------------------------------------
     return (wantedUser.grades.reduce((a, b) => a + b.grade, 0) /
         wantedUser.grades.length);
-}
+});
 export const addGrade = (passportId, newGrade) => __awaiter(void 0, void 0, void 0, function* () {
     console.log("passportId:", passportId);
     if (!passportId) {
@@ -97,4 +111,13 @@ export const updateGrade = (passportId, newGrade) => __awaiter(void 0, void 0, v
     user.grades = user.grades.filter((g) => g.subject !== newGrade.subject);
     user.grades.push(newGrade);
     user.save();
+});
+export const deleteUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!id) {
+        throw new ErrorWithStatusCode("id is required", 400);
+    }
+    const user = yield UserModel.findByIdAndDelete(id);
+    if (!user) {
+        throw new ErrorWithStatusCode("User not found", 404);
+    }
 });
