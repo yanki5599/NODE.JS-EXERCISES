@@ -120,3 +120,13 @@ export const updateGrade = async (
   user.grades.push(newGrade);
   user.save();
 };
+
+export const deleteUser = async (id: string) => {
+  if (!id) {
+    throw new ErrorWithStatusCode("id is required", 400);
+  }
+  const user = await UserModel.findByIdAndDelete(id);
+  if (!user) {
+    throw new ErrorWithStatusCode("User not found", 404);
+  }
+};
