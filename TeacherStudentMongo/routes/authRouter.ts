@@ -6,11 +6,34 @@ const router = express.Router();
 /**
  * @swagger
  * /login:
- *   get:
- *     description: Login
+ *   post:
+ *     summary: login in
+ *     requestBody:
+ *            required: true
+ *            content:
+ *              application/json:
+ *                  schema:
+ *                    type: object
+ *                    properties:
+ *                      passportId:
+ *                        type: string
+ *                      password:
+ *                        type: string
+ *                    example:
+ *                      passportId: 123456789
+ *                      password: password
+ *
  *     responses:
- *       200:
- *         description: Login
+ *       201:
+ *         description: login
+ *         content:
+ *           application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  message:
+ *                    type: string
+ *                    example: "User logged in successfully"
  *
  *
  */
@@ -20,9 +43,36 @@ router.route("/login").post(authController.login);
  * @swagger
  * /register:
  *   post:
- *     description: Register
+ *     summary: registers a new user
+ *     requestBody:
+ *            required: true
+ *            content:
+ *              application/json:
+ *                  schema:
+ *                    type: object
+ *                    properties:
+ *                      fullName:
+ *                        type: string
+ *                      passportId:
+ *                        type: string
+ *                      password:
+ *                        type: string
+ *                    example:
+ *                      fullName: John Doe
+ *                      passportId: 123456789
+ *                      password: password
+ *
  *     responses:
  *       201:
+ *         description: register
+ *         content:
+ *           application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  message:
+ *                    type: string
+ *                    example: "User created successfully"
  *
  *
  */
