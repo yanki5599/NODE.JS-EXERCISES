@@ -8,10 +8,14 @@ import teacherRouter from "./routes/teacherRouter.js";
 import { authMiddleware } from "./middleware/authMiddleware.js";
 import { connectDB } from "./config/db.js";
 import cookieParser from "cookie-parser";
+import swaggerUi from "swagger-ui-express";
+import specs from "./swagger.js";
 
 dotenv.config();
 connectDB();
 const app: Application = express();
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 const PORT = process.env.PORT || 5000;
 
